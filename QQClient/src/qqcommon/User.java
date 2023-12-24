@@ -8,6 +8,9 @@ import java.io.Serializable;
 public class User implements Serializable {
     private String userId;//用户名
     private String passward;//用户密码
+    public User(){
+
+    }
 
     public User(String userId, String passward) {
         this.userId = userId;
