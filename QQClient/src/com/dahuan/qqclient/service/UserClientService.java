@@ -31,6 +31,7 @@ public class UserClientService {
 
     /**
      * 根据用户账号密码验证用户是否合法
+     *
      * @param userId 用户名
      * @param pwd    用户密码
      * @return
@@ -45,18 +46,38 @@ public class UserClientService {
             oos.writeObject(user);//发送对象到服务器
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             Message msg = (Message) ois.readObject();
-            if (msg.getMesType() == MessageType.MESSAGE_LOGIN_SUCCEED){
+            if (msg.getMesType().equals(MessageType.MESSAGE_LOGIN_SUCCEED)) {
                 //启动一个线程和服务器保持通信
                 ClientContentServerThread ccst = new ClientContentServerThread(socket);
                 ccst.start();
                 //为了客户端的扩展 线程通过集合管理
-                ManagerClientConnectServerThread.addClientConnetServerThread(user.getUserId(),ccst);
+                ManagerClientConnectServerThread.addClientConnetServerThread(user.getUserId(), ccst);
                 return true;
-            }else {
+            } else {
                 socket.close();
                 return false;
             }
         } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 向服务器请求在线用户列表
+     */
+    public void onlineFriendList(){
+        Message msg = new Message();
+        msg.setMesType(MessageType.MESSAGE_GET_ONLINE_FRIEND);
+        msg.setSender(user.getUserId());
+        try {
+            ClientContentServerThread ccst = ManagerClientConnectServerThread.getClientConnectServerThread(user.getUserId());
+            if (ccst == null){
+                System.out.println("ccst is null");
+                return;
+            }
+            ObjectOutputStream oos = new ObjectOutputStream(ccst.getSocket().getOutputStream());
+            oos.writeObject(msg);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

@@ -1,4 +1,4 @@
-package com.dahuan.qqcommon;
+package qqcommon;
 
 import java.io.Serializable;
 
