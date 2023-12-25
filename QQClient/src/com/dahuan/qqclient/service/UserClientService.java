@@ -13,6 +13,7 @@ import java.net.Socket;
 /**
  * 该类完成用户登陆和用户注册等等
  */
+@SuppressWarnings({"all"})
 public class UserClientService {
     private User user = new User();
     private Socket socket;
@@ -65,18 +66,40 @@ public class UserClientService {
     /**
      * 向服务器请求在线用户列表
      */
-    public void onlineFriendList(){
+    public void onlineFriendList() {
         Message msg = new Message();
         msg.setMesType(MessageType.MESSAGE_GET_ONLINE_FRIEND);
         msg.setSender(user.getUserId());
         try {
             ClientContentServerThread ccst = ManagerClientConnectServerThread.getClientConnectServerThread(user.getUserId());
-            if (ccst == null){
+            if (ccst == null) {
                 System.out.println("ccst is null");
                 return;
             }
             ObjectOutputStream oos = new ObjectOutputStream(ccst.getSocket().getOutputStream());
             oos.writeObject(msg);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void logout() {
+        ClientContentServerThread ccst = ManagerClientConnectServerThread.getClientConnectServerThread(user.getUserId());
+        if (ccst == null) {
+            System.out.println("退出系统！");
+            System.exit(0);
+            return;
+        }
+        Message msg = new Message();
+        msg.setMesType(MessageType.MESSAGE_CLIENT_EXIT);
+        msg.setSender(user.getUserId());
+        ObjectOutputStream oos = null;
+        try {
+            oos = new ObjectOutputStream(ccst.getSocket().getOutputStream());
+            oos.writeObject(msg);
+            System.out.println(user.getUserId() + ":退出系统！");
+            ccst.stop();
+            System.exit(0);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

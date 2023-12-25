@@ -1,8 +1,10 @@
 package com.dahuan.qqclient.view;
 
+import com.dahuan.qqclient.service.MessageClientService;
 import com.dahuan.qqclient.service.UserClientService;
 import com.dahuan.qqclient.utils.Utility;
 
+import javax.lang.model.element.VariableElement;
 import java.util.Scanner;
 
 /**
@@ -10,6 +12,7 @@ import java.util.Scanner;
  */
 @SuppressWarnings({"all"})
 public class QQView {
+    MessageClientService messageClientService = new MessageClientService();
     private boolean isLoop = true;
     private Scanner scanner = new Scanner(System.in);
     private String key = "";
@@ -52,9 +55,16 @@ public class QQView {
                                     break;
                                 case "2":
                                     System.out.println("群发消息");
+                                    System.out.println("请输入想对大家说的话");
+
                                     break;
                                 case "3":
                                     System.out.println("私聊消息");
+                                    System.out.println("请输入在线的好友用户号");
+                                    String getterId = Utility.readString(20);
+                                    System.out.println("请输入想说的话");
+                                    String msgConnect = Utility.readString(100);
+                                    messageClientService.sendMessageToOne(msgConnect, userId, getterId);
                                     break;
                                 case "4":
                                     System.out.println("发送文件");
@@ -62,6 +72,7 @@ public class QQView {
                                 case "9":
                                     System.out.println("退出系统");
                                     isLoop = false;
+                                    userClientService.logout();
                                     break;
                             }
                         }

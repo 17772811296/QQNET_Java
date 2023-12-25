@@ -41,4 +41,14 @@ public class ManagerClientThread {
         }
         return sb.toString();
     }
+    public static ServerConnectClientThread  removeServerConnectClientThread(String userId){
+        ServerConnectClientThread scct = null;
+        if (hm.containsKey(userId)){
+            scct = hm.get(userId);
+            hm.remove(userId);
+        }else {
+            scct = null;
+        }
+        return scct;
+    }
 }
