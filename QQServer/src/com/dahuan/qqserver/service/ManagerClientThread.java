@@ -1,13 +1,18 @@
 package com.dahuan.qqserver.service;
 
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 管理客户端进行通信的线程
  */
 @SuppressWarnings({"all"})
 public class ManagerClientThread {
-    private static HashMap<String, ServerConnectClientThread> hm = new HashMap<>();
+    private static ConcurrentHashMap<String, ServerConnectClientThread> hm = new ConcurrentHashMap<>();
+
+    public static ConcurrentHashMap<String, ServerConnectClientThread> getHm() {
+        return hm;
+    }
 
     /**
      * 通过userId添加一个Thread

@@ -91,7 +91,7 @@ public class UserClientService {
             return;
         }
         Message msg = new Message();
-        msg.setMesType(MessageType.MESSAGE_CLIENT_EXIT);
+        msg.setMesType(MessageType.MESSAGE_TO_ALL_MES);
         msg.setSender(user.getUserId());
         ObjectOutputStream oos = null;
         try {

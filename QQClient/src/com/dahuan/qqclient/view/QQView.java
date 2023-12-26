@@ -1,5 +1,6 @@
 package com.dahuan.qqclient.view;
 
+import com.dahuan.qqclient.service.FileClientService;
 import com.dahuan.qqclient.service.MessageClientService;
 import com.dahuan.qqclient.service.UserClientService;
 import com.dahuan.qqclient.utils.Utility;
@@ -18,6 +19,7 @@ public class QQView {
     private String key = "";
     //创建socke线程，登陆注册等操作
     private UserClientService userClientService = new UserClientService();
+    private FileClientService fileClientService = new FileClientService();
 
     public static void main(String[] args) {
         new QQView().mainMenu();
@@ -56,7 +58,8 @@ public class QQView {
                                 case "2":
                                     System.out.println("群发消息");
                                     System.out.println("请输入想对大家说的话");
-
+                                    String msgAllConntct = Utility.readString(100);
+                                    messageClientService.sendMessageToAll(msgAllConntct, userId);
                                     break;
                                 case "3":
                                     System.out.println("私聊消息");
@@ -68,6 +71,13 @@ public class QQView {
                                     break;
                                 case "4":
                                     System.out.println("发送文件");
+                                    System.out.println("请输入在线的好友用户号");
+                                    getterId = Utility.readString(20);
+                                    System.out.println("请输入文件位置(比如 d：\\xxx.jpg)");
+                                    String src = Utility.readString(100);
+                                    System.out.println("请输入接受位置(比如 d：\\xxx.jpg)");
+                                    String dest = Utility.readString(100);
+                                    fileClientService.sendFileToOne(src, dest, userId, getterId);
                                     break;
                                 case "9":
                                     System.out.println("退出系统");

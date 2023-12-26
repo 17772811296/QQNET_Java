@@ -37,11 +37,16 @@ public class MessageClientService {
         }
     }
 
+    /**
+     * 发送群聊消息
+     * @param connect
+     * @param senderId
+     */
     public void sendMessageToAll(String connect, String senderId){
         Message msg = new Message();
         msg.setSender(senderId);
         msg.setContent(connect);
-        msg.setMesType(MessageType.MESSAGE_COMM_MES);
+        msg.setMesType(MessageType.MESSAGE_TO_ALL_MES);
         msg.setSendTime(new Date().toString());
         System.out.println(senderId + " 对 " + "大家" + " 说 :");
         System.out.println(connect + "   /" + msg.getSendTime());
